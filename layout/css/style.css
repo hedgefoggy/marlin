@@ -1,0 +1,39 @@
+*{
+    background-color: #626262;
+    margin: 0.5%;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Popins", sans-serif;
+}
+
+::placeholder {
+    color: darkgrey; /* Задайте нужный цвет */
+    opacity: 1; /* Убедитесь, что текст полностью непрозрачный */}
+
+
+.container {
+    grid-template-columns: 1fr 1fr 1fr; /*repeat(9, 1fr);*/
+    display: grid;
+    /*grid-template-rows: 0%;*/
+    /*grid-column-gap: 0%;*/
+    /*grid-gap: 0%;*/
+    grid-auto-rows: minmax(0, auto);
+    justify-content: center;
+    /*align-content: start;*/
+    align-items: center;
+    justify-items: center;
+}
+
+.item {
+    padding: 3%;
+    border: 1px solid #000000;
+}
+
+.item_5 {
+    /*grid-column-start: 2;*/
+    /*grid-column-end: 3;*/
+    /*grid-column: 2/3;*/
+    /*grid-row: 2/3;*/
+    justify-self: center;
+    /*align-self: center;*/
+}
