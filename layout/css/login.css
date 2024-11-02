@@ -12,7 +12,7 @@
 
 
 .container {
-    grid-template-columns: 2fr 1fr; /*repeat(9, 1fr);*/
+    grid-template-columns:  repeat(3, 1fr);;
     display: grid;
     /*grid-template-rows: 0%;*/
     /*grid-column-gap: 0%;*/

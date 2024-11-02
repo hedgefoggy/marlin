@@ -1,4 +1,6 @@
 <?php
+session_start(); // Start a session to store messages
+
 function get_db_connection()
 {
     $dbHost = "MySQL-8.2";
@@ -43,7 +45,6 @@ function get_user_by_email($email)
     return $stmt->fetch(PDO::FETCH_ASSOC) ?: [];
 };
 
-var_dump(get_user_by_email("qwe@qwe.qwe"));
 
 
 function add_user($email, $password, $confirm_password)
@@ -56,6 +57,11 @@ function add_user($email, $password, $confirm_password)
     Description: add user to database if passwords match
     Return value: int (user_id) or string (error message)
     */
+
+    // Check if the user already exists
+    if (get_user_by_email($email)) {
+        return "User with this email already exists.";
+    }
 
     // Check if the passwords match
     if ($password !== $confirm_password) {
@@ -87,10 +93,29 @@ function add_user($email, $password, $confirm_password)
         return "Error adding user.";
     }
     return $user_id;
-};
+}
 
-$user1 = add_user("user@soap.net", "qwe123", "qwe123");
-var_dump($user1);
+//$user1 = add_user("user@soap.net", "qwe123", "qwe123");
+//var_dump($user1);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Getting data from the form
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $confirm_password = $_POST['confirm_password'];
+
+    // Calling the add user function
+    $result = add_user($email, $password, $confirm_password);
+
+    // Store result in session variable
+    $_SESSION['message'] = htmlspecialchars($result);
+
+    // No redirection, just keep the message in session
+
+    // Redirect back to the registration page
+    header("Location: register.php");
+    exit();
+}
 
 
 function set_flash_message($name, $message)
@@ -104,29 +129,9 @@ function set_flash_message($name, $message)
      * Return value: null
      */
 
-    $pdo = get_db_connection();
-    if (!pdo) {
-        return [];
-    }
+    $_SESSION[$name] = $message;
 
-    // Prepare the SQL statement
-    $stmt = $pdo->prepare("UPDATE users SET message = :message WHERE name = :name");
-
-    // Bind parameters
-    $stmt->bindParam(':message', $message);
-    $stmt->bindParam('name', $name);
-
-    // Execute the statement
-    if ($stmt->execute()) {
-        echo "Message successfully updated!";
-    } else {
-        echo "Failed to update message.";
-    }
-};
-
-$user1 = 'Kuzma';
-$message = "ЗАРЕGUN!";
-set_flash_message($user1, $message);
+}
 
 
 function display_set_message($name)
@@ -138,24 +143,11 @@ function display_set_message($name)
      * Return value: null
      */
 
-    $pdo = get_db_connection();
-    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Prepare the sql statement
-    $stmt = $pdo->prepare("SELECT message FROM users WHERE name = :name");
-    $stmt->bindParam(':name', $name);
-
-    // Execute the statemen
-    $stmt->execute();
-
-    // Getting the result
-    $message = $stmt->fetchColumn();
-
-    if ($message) {
-        echo htmlspecialchars($message); // Outputting a message with XSS protection
-    } else {
-        echo "Message not found";
+    if (isset($_SESSION[$name])) {
+        echo '<div class="alert">' . $_SESSION[$name] . '</div>';
+        unset($_SESSION[$name]);    // Remove message after displaying it
     }
+
 };
 
 
@@ -181,4 +173,3 @@ function redirect_to($path)
 };
 
 ?>
-

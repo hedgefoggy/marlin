@@ -1,38 +1,52 @@
 *{
-    background-color: #626262;
-    margin: 0.5%;
-    padding: 0;
     box-sizing: border-box;
     font-family: "Popins", sans-serif;
+    background-color: #626262;
+    margin: 0;
+    padding: 0;
 }
 
 ::placeholder {
-    color: darkgrey; /* Задайте нужный цвет */
-    opacity: 1; /* Убедитесь, что текст полностью непрозрачный */}
+    color: darkgrey;
+    opacity: 1; /* Убедитесь, что текст полностью непрозрачный */
+}
 
 
 .container {
-    grid-template-columns: 1fr 1fr 1fr; /*repeat(9, 1fr);*/
     display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 1fr 1fr 1fr */
     /*grid-template-rows: 0%;*/
     /*grid-column-gap: 0%;*/
-    /*grid-gap: 0%;*/
-    grid-auto-rows: minmax(0, auto);
-    justify-content: center;
-    /*align-content: start;*/
-    align-items: center;
+    grid-gap: 10%;
     justify-items: center;
+    align-items: center;
+    grid-auto-rows: minmax(0, auto);
+    /*justify-content: center;*/
+    /*align-content: start;*/
+
 }
 
 .item {
-    padding: 3%;
+    padding: 1%;
     border: 1px solid #000000;
+    /*border-radius: 5px; !* Закругление углов *!*/
+    /*width: 100%; !* Занять всю ширину родительского элемента *!*/
+    text-align: center; /* Центрирование текста внутри элемента */
+
 }
 
-.item_1 {
-
+.item_2 {
+    padding: 3%;
+    margin: 3%;
+    border: 1px solid transparent;
+    /*border-radius: 5px;*/
+    color: #000000; /* Цвет текста */
+    background-color: #ff0000; /* Цвет фона */
+    border-color: #000000; /* Цвет границы */
 }
 .item_5 {
+    padding: 3%;
+    margin: 3%;
     /*grid-column-start: 2;*/
     /*grid-column-end: 3;*/
     /*grid-column: 2/3;*/
