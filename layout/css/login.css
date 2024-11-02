@@ -12,7 +12,7 @@
 
 
 .container {
-    grid-template-columns: 2fr 1fr 1fr; /*repeat(9, 1fr);*/
+    grid-template-columns: 2fr 1fr; /*repeat(9, 1fr);*/
     display: grid;
     /*grid-template-rows: 0%;*/
     /*grid-column-gap: 0%;*/
@@ -32,7 +32,7 @@
 .item_1 {
 
 }
-.item_5 {
+.item_2 {
     /*grid-column-start: 2;*/
     /*grid-column-end: 3;*/
     /*grid-column: 2/3;*/

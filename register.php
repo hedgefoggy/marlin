@@ -22,11 +22,11 @@ function get_db_connection()
 function get_user_by_email($email)
 {
     /*
-    * Parameters:
+     * Parameters:
             string - $email
-    *   Description: search user by email
-    *   Return value: array
-    */
+     * Description: search user by email
+     *   Return value: array
+     */
 
     $pdo = get_db_connection();
     if (!$pdo) {
@@ -46,19 +46,25 @@ function get_user_by_email($email)
 var_dump(get_user_by_email("qwe@qwe.qwe"));
 
 
-function add_user($email, $password)
+function add_user($email, $password, $confirm_password)
 {
     /*
     Parameters:
             string - $email
             string - $password
-    Description: add user to database
-    Return value: int (user_id)
+            string - $confirm_password
+    Description: add user to database if passwords match
+    Return value: int (user_id) or string (error message)
     */
+
+    // Check if the passwords match
+    if ($password !== $confirm_password) {
+        return "Passwords do not match.";
+    }
 
     $pdo = get_db_connection();
     if (!pdo) {
-        return [];
+        return "Database connect error.";
     }
 
     // Prepare the SQL statement
@@ -73,17 +79,17 @@ function add_user($email, $password)
     $stmt->bindParam(':password', $hashed_password);
 
     // Execute the statement
-    $stmt->execute();
-
-    echo "User added successfully!";
-
-    // Get the ID of the newly inserted user
-    $user_id = $pdo->lastInsertId();
-
+    if ($stmt->execute()) {
+        echo "User added successfully!";
+        // Get the ID of the newly inserted user
+        $user_id = $pdo->lastInsertId();
+    } else {
+        return "Error adding user.";
+    }
     return $user_id;
 };
 
-$user1 = add_user("user2@soap.net", "qwe123");
+$user1 = add_user("user@soap.net", "qwe123", "qwe123");
 var_dump($user1);
 
 
@@ -126,13 +132,11 @@ set_flash_message($user1, $message);
 function display_set_message($name)
 {
     /*
-    * Parameters:
-    *          string - $name (key)
-    *
-    * Description: Display flash message
-    * Return value: null
-    */
+     * Parameters: string - $name (key)
 
+     * Description: Display flash message
+     * Return value: null
+     */
 
     $pdo = get_db_connection();
     $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
